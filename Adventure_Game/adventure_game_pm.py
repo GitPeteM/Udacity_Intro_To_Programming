@@ -2,16 +2,18 @@ import time
 
 import random
 
-
+# Create a pause between messages in the game.
 def print_pause(message, delay=0):
     print(message)
     time.sleep(delay)
 
-
+# List of monster names that will be used when the game randomly generates
+# a monster.
 monster_name = ["Rajang", "Khezu", "Lunastra", "Rathian", "Rathalos",
                 "Yian Kut-Ku"]
 
-
+# List of weapon names that will be used when the game randomly generates
+# a weapon.
 weapon_name = ["Voidsteel Sword", "Dwarven Axe", "Excalibur",
                "William Wallace Sword", "Elven Inferno Staff"]
 
