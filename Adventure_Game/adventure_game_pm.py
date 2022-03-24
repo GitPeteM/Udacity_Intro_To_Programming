@@ -1,0 +1,235 @@
+import time
+
+import random
+
+
+def print_pause(message, delay=0):
+    print(message)
+    time.sleep(delay)
+
+
+monster_name = ["Rajang", "Khezu", "Lunastra", "Rathian", "Rathalos",
+                "Yian Kut-Ku"]
+
+
+weapon_name = ["Voidsteel Sword", "Dwarven Axe", "Excalibur",
+               "William Wallace Sword", "Elven Inferno Staff"]
+
+
+def valid_input(prompt, options):
+    while True:
+        option = input(prompt).lower()
+        if option in options:
+            return option
+        print_pause(f'Sorry, the option "{option}" is invalid. Try again!')
+
+
+def intro():
+    print_pause("You are an aspiring Merchant from the City Evermore,"
+                " looking \nto open up a Merchant Guild in the nearby "
+                "town of Rivenspire.", 1.5)
+    print_pause("Rivenspire is surrounded by three different types of "
+                "terrain.", 1.5)
+    print_pause("Hammerfell Mountain Range to the West, Tebath River to the"
+                " South, \nand the Forest of Morrowind to the North and East.",
+                1.5)
+    print_pause("You will need to find the safest path to Rivenspire in "
+                "order to create a trade route.\n", 1.5)
+
+
+def exploration(monster, weapon, items):
+    print_pause("Enter 1 to travel to Hammerfell Mountains.\nEnter 2 to travel"
+                " to the Forest of Morrowind.\nEnter 3 to travel by the Tebath"
+                " River.\nWhat would you like to do?", .5)
+    choice = valid_input("(Please enter 1, 2, or 3.)\n", ["1", "2", "3"])
+    if choice == "1":
+        Hammerfell(monster, weapon, items)
+    elif choice == "2":
+        Morrowind(monster, weapon, items)
+    elif choice == "3":
+        Tebath(monster, weapon, items)
+
+
+def Hammerfell(monster, weapon, items):
+    print_pause("You travel along the Hammerfell Mountain Range.", 1.5)
+    print_pause("The path diverges up the mountain or into a cave.", 1.5)
+    mountain(monster, weapon, items)
+
+
+def mountain(monster, weapon, items):
+    mountain_choice = valid_input("Enter 1 to continue up the path.\n"
+                                  "Enter 2 to enter the cave.\n"
+                                  "Enter 3 to return to Evermore.\n",
+                                  ["1", "2", "3"])
+    if mountain_choice == "1":
+        mountain_range()
+    elif mountain_choice == "2":
+        cave(monster, weapon, items)
+    elif mountain_choice == "3":
+        print_pause("You are welcomed back by the Guards at the Front Gate.",
+                    1.5)
+        exploration(monster, weapon, items)
+
+
+def mountain_range():
+    print_pause("As you move along the path, you hear a sudden rumble "
+                "from above.", 1.5)
+    print_pause("OH NO! It's an avalanche. You try to flee, but are crushed "
+                "by the boulders above.", 1.5)
+    print_pause("GAME OVER", 1)
+
+
+def cave(monster, weapon, items):
+    if "weapon" in items:
+        print_pause("You peer cautiously into the cave.", 1.5)
+        print_pause("You've been here before, and gotten all the good stuff."
+                    " It's just an empty cave now.", 1.5)
+        print_pause("You walk back out to the trail path.", 1.5)
+        mountain(monster, weapon, items)
+    else:
+        print_pause("You peer cautiously into the cave.", 1.5)
+        print_pause("It turns out to be only a very small cave.", 1.5)
+        print_pause("Your eye catches a glint of metal behind a rock.", 1.5)
+        print_pause(f"You have found the {weapon} of Ogoroth!", 1.5)
+        print_pause("Better safe than sorry on your adventure.", 1.5)
+        print_pause("You walk back out to the trail path.\n", 1.5)
+        items.append("weapon")
+        mountain(monster, weapon, items)
+
+
+def Morrowind(monster, weapon, items):
+    print_pause("You approach the Forest of Morrowind and find a local "
+                "tribe of Elves.", 1.5)
+    print_pause("The Elves do not allow you access to the forest, however "
+                "are open to trading supplies and goods.", 1.5)
+    print_pause("Would you like discuss trade with the Elven tribe or "
+                "return to Evermore?\n", .5)
+    forest_choice = valid_input("Enter 1 to trade.\nEnter 2 for"
+                                " Evermore.\n", ["1", "2"])
+    if forest_choice == "1":
+        trade(monster, weapon, items)
+    elif forest_choice == "2":
+        print_pause("You return to Evermore.\n", 1)
+        exploration(monster, weapon, items)
+
+
+def trade(monster, weapon, items):
+    print_pause("There are several goods for sale from food, weapons,"
+                " carts, and ships.", 1.5)
+    if "river" in items:
+        if "longboat" in items:
+            print_pause("You purchase an Apple Pie from the Elves.", 1.5)
+            print_pause("There's nothing else you need from here.", 1.5)
+            print_pause("You return to Evermore.\n", 1)
+            exploration(monster, weapon, items)
+        else:
+            print_pause(f"You purchase the Elves' strongest longboat with"
+                        " a bulky hull.", 1.5)
+            print_pause("You return to Evermore with the boat in tow.\n", 1)
+            items.append("longboat")
+            exploration(monster, weapon, items)
+    else:
+        print_pause("You enjoy the Elves' fresh pastries and purchase a"
+                    " dozen chocolate croissants.", 1.5)
+        print_pause("You return to Evermore.\n", 1)
+        exploration(monster, weapon, items)
+
+
+def Tebath(monster, weapon, items):
+    if "river" in items:
+        print_pause("The Dockmaster asks if you've aquired a vessel to "
+                    "sail along the river.", 1.5)
+        if "longboat" in items:
+            print_pause("Luckily you have purchased the Elven longboat.", 1)
+            river_choice = valid_input("Press 1 to set sail.\nPress 2 to"
+                                       " return to the City.\n", ["1", "2"])
+            if river_choice == "1":
+                travel_river(monster, weapon, items)
+            elif river_choice == "2":
+                print_pause("You leave the Docks.\n", 1)
+                exploration(monster, weapon, items)
+        else:
+            print_pause("You have not aquired a vessel, you return to "
+                        "the City.\n", 1)
+            exploration(monster, weapon, items)
+    else:
+        print_pause("You discuss traveling to Rivenspire from Evermore "
+                    "with the Dockmaster.", 1.5)
+        print_pause(f"They tell you a {monster} has taken over the river, "
+                    "destroying all boats traveling towards Rivenspire.", 1.5)
+        print_pause("You determine you'll need a ship with a strong hull "
+                    f"to withstand the {monster}'s attacks.", 1.5)
+        print_pause("You have no way to set sail right now.", 1.5)
+        print_pause("The Dockmaster recalls a ship craftsmaster living with "
+                    "the Elves in the Forest of Morrowind.", 1.5)
+        print_pause("You may want to check out the Elven marketplace.", 1.5)
+        print_pause("You leave the Docks.\n", 1)
+        items.append("river")
+        exploration(monster, weapon, items)
+
+
+def travel_river(monster, weapon, items):
+    print_pause("You set sail along the Tebath River preparing for your "
+                f"encounter with the {monster}.", 1.5)
+    print_pause(f"The {monster} emerges from the water!", 1.5)
+    print_pause(f"The {monster} attacks you!", 1.5)
+    fight(monster, weapon, items)
+
+
+def fight(monster, weapon, items):
+    print_pause("Would you like to (1) fight or (2) run away?", .5)
+    fight_choice = valid_input("Please enter 1 or 2.\n", ["1", "2"])
+    if fight_choice == "1":
+        if "weapon" in items:
+            print_pause(f"As the {monster} moves to attack, you unsheath "
+                        "your new weapon.", 1.5)
+            print_pause(f"The {weapon} of Ogoroth shines brightly in your "
+                        "hand as you brace yourself for the attack.", 1.5)
+            print_pause(f"But the {monster} takes one look at your shiny new "
+                        "toy and runs away!", 1.5)
+            print_pause(f"You have rid the Tebath River of the {monster}.",
+                        1.5)
+            print_pause("You safely make it to Rivenspire, hailed as a Hero!\n"
+                        "You are victorious in establishing a Merchant "
+                        "Guild in Rivenspire!", 1.5)
+        else:
+            print_pause(f"You unleash a barrage of arrows at the {monster}, "
+                        "however they do little damage.", 1.5)
+            print_pause("Your longboat could only withstand so much from the "
+                        "wicked beast.", 1.5)
+            print_pause("The wicked beast unleashes \"HOLY FIRE!\" onto your "
+                        "ship, sinking \nyou to the bottom depths of "
+                        "the river.", 1.5)
+            print_pause("You have been defeated!", 1)
+    elif fight_choice == "2":
+        print_pause("You escaped the wrath of the wicked beast.", 1.5)
+        print_pause("Luckily, your longboat received minimal damage.", 1.5)
+        print_pause("You return to Evermore, where would you like to go?\n", 1)
+        exploration(monster, weapon, items)
+
+
+def play_again():
+    start_over = valid_input("Would you like to play again? (y/n)\n",
+                             ["y", "n"])
+    if start_over == "n":
+        print_pause("Thank you for playing.", 1)
+        exit(0)
+
+
+def play_adventure_game():
+    items = []
+    monster = random.choice(monster_name)
+    weapon = random.choice(weapon_name)
+    intro()
+    exploration(monster, weapon, items)
+
+
+def adventure_game():
+    while True:
+        play_adventure_game()
+        play_again()
+
+
+# Start of the Adventure
+if __name__ == '__main__':
+    adventure_game()
